@@ -11,134 +11,339 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
     color: white;
+    overflow: hidden;
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    overflow-x: hidden;
+    padding: 30px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+    pointer-events: none;
 }
 
-.section {
-    min-height: 100vh;
-    display: none;
-    padding: 40px 20px;
+.screen.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
-.active {
-    display: block;
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.3em;
+    line-height: 1.5;
 }
 
 button {
-    font-size: 1.2em;
-    padding: 15px 30px;
+    margin-top: 30px;
+    font-size: 1.1em;
+    padding: 14px 28px;
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    margin-top: 30px;
-}
-
-.btn {
     background-color: #ff4d6d;
     color: white;
 }
 
+/* GALERÍA */
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 15px;
-    margin-top: 30px;
+    width: 100%;
 }
 
 .gallery img {
     width: 100%;
     border-radius: 15px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
 }
 
+/* BOTONES FINALES */
 .question button {
     position: absolute;
 }
 
 .si {
-    background-color: #ff4d6d;
-    color: white;
     left: 50%;
+    top: 65%;
     transform: translateX(-140px);
-    top: 60%;
 }
 
 .no {
-    background-color: white;
+    background: white;
     color: #ff4d6d;
     left: 50%;
+    top: 65%;
     transform: translateX(40px);
-    top: 60%;
 }
+
+.carousel {
+    width: 100%;
+    max-width: 320px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-track img {
+    width: 100%;
+    flex-shrink: 0;
+    border-radius: 20px;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 15px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 4px;
+    transition: background 0.3s;
+}
+
+.dot.active {
+    background: #ff5c8a;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- 1️⃣ TEXTO INICIAL -->
-<div class="section active" id="intro">
-    <h1>💖 Para ti 💖</h1>
-    <p>
-        Desde que llegaste a mi vida,<br>
-        todo se siente diferente.<br><br>
-        Cada momento contigo vale la pena<br>
-        y quería decirte algo especial…
-    </p>
-    <button class="btn" onclick="nextSection('gallery')">Continuar 💕</button>
+<!-- 1 -->
+<div class="screen active">
+    <p>Desde que te conocí,<br>
+    literalmente no estaba buscando una relación</p>
+    empezamos hablar y a compartir varios momentos de nuestras vidas</p>
+    <button onclick="next()">Continuar 💕</button>
 </div>
 
-<!-- 2️⃣ GALERÍA DE FOTOS -->
-<div class="section" id="gallery">
-    <h1>Nuestros Momentos 📸❤️</h1>
+<!-- 2 -->
+<div class="screen">
+    <p>
+        Pero poco a poco,<br>
+        te fui conociendo…<br>
+    </p>
 
-    <div class="gallery">
-        <img src="fotos/foto1.jpeg">
-        <img src="fotos/foto2.jpeg">
-        <img src="fotos/foto3.jpeg">
-        <img src="fotos/foto4.jpeg">
+    <button onclick="next()">Continuar 💕</button>
+</div>
+
+<!-- 3 -->
+<div class="screen">
+    <p>Y sin darme cuenta,<br>
+    empezamos a salir en plan de amigos</p>
+    
+    <button onclick="mostrarFoto(this)">
+        Presiona aquí para ver una foto de las primeras salidas 
+    </button>
+
+    <div class="hidden-photo">
+        <img src="fotos/foto9.jpeg">
     </div>
 
-    <button class="btn" onclick="nextSection('question')">Siguiente 💘</button>
+    <button onclick="next()" class="continuar" style="display:none">
+        Continuar 💕
+    </button>
+
 </div>
 
-<!-- 3️⃣ PREGUNTA FINAL -->
-<div class="section question" id="question">
-    <h1>💘 Tengo una pregunta… 💘</h1>
-    <h2>¿Quieres ser mi San Valentín? 🌹</h2>
+<div class="screen">
+    <p>
+        Luego llegó el concierto de Halloween<br><br>
+        y de forma natural,<br>
+        solo quería estar contigo,<br>
+        cuidarte<br>
+        y protegerte ❤️
+    </p>
 
-    <button class="si" onclick="acepta()">Sí 💕</button>
-    <button class="no" id="btnNo">No 🙈</button>
+    <!-- Botón para mostrar la foto -->
+    <button class="reveal-btn" onclick="mostrarFoto()">
+        Presiona aquí para ver la foto
+    </button>
+
+    <!-- Imagen oculta -->
+    <div class="gallery hidden" id="photoBox">
+        <img src="fotos/foto8.jpeg">
+    </div>
+
+    <button onclick="next()">Continuar 💘</button>
 </div>
+
+<div class="screen">
+    <p>
+        Luego llegó nuestro primer viaje…<br><br>
+        y ahí descubrí algo que todavia estaba en duda por dentro:<br>
+        que amaba pasar el tiempo a tu lado,<br>
+        haciendo literalmente cualquier cosa
+    </p>
+
+    <!-- Botón para revelar la foto -->
+    <button class="reveal-btn" onclick="mostrarFoto()">
+        Presiona aquí para ver las fotos de nuestro primer viaje
+    </button>
+
+    <!-- Imagen oculta -->
+    <div class="gallery hidden" id="photoBox">
+        <img src="fotos/foto6.jpeg">
+        <img src="fotos/foto7.jpeg">
+    </div>
+
+    <button onclick="next()">Continuar 💘</button>
+</div>
+
+<div class="screen">
+    <p>
+        Luego seguimos saliendo,<br>
+        una semana después del viaje…<br><br>
+        pero nuestras interacciones<br>
+        ya iban por otro lado
+    </p>
+
+    <button onclick="next()">Continuar 💘</button>
+</div>
+
+<div class="screen">
+    <p>
+        Hasta que llegó el día…<br><br>
+        en el que tenía que decirte<br>
+        que estaba sintiendo cosas diferentes,<br>
+        y que me gustaría intentar algo contigo<br>
+        más allá de la amistad
+    </p>
+
+    <button onclick="next()">Continuar 💘</button>
+</div>
+
+<div class="screen">
+    <p>
+        Luego llegó nuestro segundo viaje…<br>
+        fuimos a Oxapampa<br><br>
+        y fue un momento maravilloso,<br>
+        porque confirmé lo feliz que era<br>
+        estando a tu lado 
+    </p>
+
+    <!-- Carrusel -->
+    <div class="carousel">
+        <div class="carousel-track" id="carouselTrack">
+            <img src="fotos/foto1.jpeg">
+            <img src="fotos/foto2.jpeg">
+            <img src="fotos/foto3.jpeg">
+            <img src="fotos/foto4.jpeg">
+            <img src="fotos/foto5.jpeg">
+        </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <button onclick="next()">Continuar 💘</button>
+</div>
+
+
+
+<div class="screen">
+    <p>
+        Con todo esto…<br>
+        solo quiero preguntarte algo<br>
+        muy importante para mí 💖
+    </p>
+
+    <h1>¿Quieres ser mi San Valentín? 🌹</h1>
+
+    <button class="yes-btn" onclick="alert('💖 Sabía que dirías que sí 💖')">
+        Sí 💘
+    </button>
+</div>
+
 
 <script>
-function nextSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+let current = 0;
+const screens = document.querySelectorAll('.screen');
+
+let currentIndex = 0;
+
+const track = document.getElementById("carouselTrack");
+const dots = document.querySelectorAll(".dot");
+
+function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    dots.forEach(dot => dot.classList.remove("active"));
+    dots[currentIndex].classList.add("active");
 }
 
+// Auto slide cada 3 segundos (opcional)
+setInterval(() => {
+    currentIndex = (currentIndex + 1) % 5;
+    updateCarousel();
+}, 3000);
+
+function next() {
+    screens[current].classList.remove('active');
+    current++;
+    screens[current].classList.add('active');
+}
+
+// Botón NO que se mueve
 const btnNo = document.getElementById("btnNo");
 
-btnNo.addEventListener("mouseover", moverBoton);
-btnNo.addEventListener("touchstart", moverBoton);
+btnNo.addEventListener("mouseover", mover);
+btnNo.addEventListener("touchstart", mover);
 
-function moverBoton() {
+function mover() {
     const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
     const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
-
     btnNo.style.left = x + "px";
     btnNo.style.top = y + "px";
 }
 
 function acepta() {
     document.body.innerHTML = `
-        <div style="padding:40px">
+        <div style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
             <h1>💖 Sabía que dirías que sí 💖</h1>
-            <h2>Gracias por ser parte de mi vida ❤️</h2>
-            <p>Feliz San Valentín 🌹</p>
+            <p>Gracias por estar conmigo ❤️</p>
+            <h2>Feliz San Valentín 🌹</h2>
         </div>
     `;
 }
+
+// Mostrar foto
+function mostrarFoto(btn) {
+    const screen = btn.parentElement;
+    screen.querySelector('.hidden-photo').style.display = "block";
+    screen.querySelector('.continuar').style.display = "inline-block";
+    btn.style.display = "none";
+}
+
 </script>
 
 </body>
