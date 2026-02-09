@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Ti ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.section {
+    min-height: 100vh;
+    display: none;
+    padding: 40px 20px;
+}
+
+.active {
+    display: block;
+}
+
+button {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.btn {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.question button {
+    position: absolute;
+}
+
+.si {
+    background-color: #ff4d6d;
+    color: white;
+    left: 50%;
+    transform: translateX(-140px);
+    top: 60%;
+}
+
+.no {
+    background-color: white;
+    color: #ff4d6d;
+    left: 50%;
+    transform: translateX(40px);
+    top: 60%;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 1️⃣ TEXTO INICIAL -->
+<div class="section active" id="intro">
+    <h1>💖 Para ti 💖</h1>
+    <p>
+        Desde que llegaste a mi vida,<br>
+        todo se siente diferente.<br><br>
+        Cada momento contigo vale la pena<br>
+        y quería decirte algo especial…
+    </p>
+    <button class="btn" onclick="nextSection('gallery')">Continuar 💕</button>
+</div>
+
+<!-- 2️⃣ GALERÍA DE FOTOS -->
+<div class="section" id="gallery">
+    <h1>Nuestros Momentos 📸❤️</h1>
+
+    <div class="gallery">
+        <img src="fotos/foto1.jpeg">
+        <img src="fotos/foto2.jpeg">
+        <img src="fotos/foto3.jpeg">
+        <img src="fotos/foto4.jpeg">
+    </div>
+
+    <button class="btn" onclick="nextSection('question')">Siguiente 💘</button>
+</div>
+
+<!-- 3️⃣ PREGUNTA FINAL -->
+<div class="section question" id="question">
+    <h1>💘 Tengo una pregunta… 💘</h1>
+    <h2>¿Quieres ser mi San Valentín? 🌹</h2>
+
+    <button class="si" onclick="acepta()">Sí 💕</button>
+    <button class="no" id="btnNo">No 🙈</button>
+</div>
+
+<script>
+function nextSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+const btnNo = document.getElementById("btnNo");
+
+btnNo.addEventListener("mouseover", moverBoton);
+btnNo.addEventListener("touchstart", moverBoton);
+
+function moverBoton() {
+    const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+    const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+
+    btnNo.style.left = x + "px";
+    btnNo.style.top = y + "px";
+}
+
+function acepta() {
+    document.body.innerHTML = `
+        <div style="padding:40px">
+            <h1>💖 Sabía que dirías que sí 💖</h1>
+            <h2>Gracias por ser parte de mi vida ❤️</h2>
+            <p>Feliz San Valentín 🌹</p>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
