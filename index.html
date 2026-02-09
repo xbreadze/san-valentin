@@ -18,7 +18,8 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
     color: white;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .screen {
@@ -30,6 +31,7 @@ body {
     align-items: center;
     text-align: center;
     padding: 30px;
+    padding-bottom: 80px;
 
     /* FONDO ROSA */
     background: linear-gradient(135deg, #ffc1cc, #ff9eb5);
@@ -39,6 +41,18 @@ body {
     transform: translateY(30px);
     transition: all 0.6s ease;
     pointer-events: none;
+}
+
+.gallery img,
+.hidden-photo img,
+.carousel-track img {
+    max-height: 45vh;   /* nunca más del 45% de la pantalla */
+    object-fit: cover;
+}
+
+.screen button {
+    position: sticky;
+    bottom: 20px;
 }
 
 
@@ -69,11 +83,16 @@ button {
     color: white;
 }
 
-/* FOTO OCULTA */
 .hidden-photo {
     display: none;
-    margin-top: 20px;
+    animation: fadeIn 0.6s ease;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 
 .hidden-photo img {
     width: 90%;
@@ -82,36 +101,45 @@ button {
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* GALERÍA */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    display: flex;
     gap: 15px;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     margin-top: 20px;
 }
 
 .gallery img {
-    width: 100%;
-    border-radius: 15px;
+    width: 45%;
+    max-height: 40vh;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
-/* CARRUSEL */
 .carousel {
     width: 100%;
-    max-width: 320px;
+    max-width: 420px;
+    height: 55vh !important;   /* 🔥 fuerza real */
+    flex-shrink: 0;            /* 🔥 evita que flex lo aplaste */
     margin: 20px auto;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
+
 
 .carousel-track {
     display: flex;
+    height: 100%;
     transition: transform 0.5s ease;
 }
 
-.carousel-track img {
+.carousel img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     flex-shrink: 0;
 }
 
@@ -120,6 +148,88 @@ button {
     justify-content: center;
     margin-top: 10px;
 }
+
+.big-carousel {
+    width: 100%;
+    max-width: 420px;
+    height: 65vh;              /* altura REAL */
+    max-height: 520px;         /* evita que sea gigante */
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-track img {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: cover;         /* 🔥 CLAVE */
+    object-position: center;   /* centra bien la foto */
+}
+
+.ig-carousel {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 9 / 16;        /* 🔥 CLAVE PARA VERTICALES */
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+    background: black;
+}
+
+.ig-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+}
+
+.ig-track img {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: cover;           /* 🔥 CLAVE */
+    object-position: center;
+}
+
+.final-buttons {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    margin-top: 30px;
+}
+
+.yes-btn {
+    font-size: 1.2em;
+    padding: 14px 32px;
+    border-radius: 30px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.no-btn {
+    position: fixed;               /* 🔥 CLAVE */
+    font-size: 1.1em;
+    padding: 12px 26px;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: #ff4d6d;
+    cursor: pointer;
+    z-index: 9999;                 /* encima de TODO */
+    left: 60%;
+    top: 70%;
+    transition: none;              /* sin retrasos */
+}
+
 
 .dot {
     width: 8px;
@@ -143,7 +253,8 @@ button {
         Desde que te conocí,<br>
         literalmente no estaba buscando una relación,<br>
         pero empezamos a hablar<br>
-        y a compartir momentos de nuestras vidas
+        y a compartir momentos de nuestras vidas de manera natural<br>
+        todo empezó cuando nos fuimos hasta el fin del mundo JAJAJAJ
     </p>
     <button onclick="next()">Continuar 💕</button>
 </div>
@@ -151,7 +262,7 @@ button {
 <!-- 2 -->
 <div class="screen">
     <p>
-        Pero poco a poco,<br>
+        Poco a poco,<br>
         te fui conociendo…
     </p>
     <button onclick="next()">Continuar 💕</button>
@@ -165,7 +276,7 @@ button {
     </p>
 
     <button onclick="mostrarFoto(this)">
-        📸 Presiona aquí para ver una foto
+        Mira la foto cuando fuimos al festival de cine PUCP
     </button>
 
     <div class="hidden-photo">
@@ -180,7 +291,7 @@ button {
 <!-- 4 -->
 <div class="screen">
     <p>
-        Luego llegó el concierto de Halloween 🎃<br><br>
+        Luego llegó el concierto de Halloween<br><br>
         y de forma natural,<br>
         solo quería estar contigo,<br>
         cuidarte<br>
@@ -188,7 +299,7 @@ button {
     </p>
 
     <button onclick="mostrarFoto(this)">
-        📸 Presiona aquí para ver la foto
+        Recuperé una foto del concierto
     </button>
 
     <div class="hidden-photo">
@@ -200,36 +311,41 @@ button {
     </button>
 </div>
 
-<!-- 5 -->
 <div class="screen">
     <p>
-        Luego llegó nuestro primer viaje…<br><br>
+        Después llegó nuestro primer viaje…<br><br>
         y ahí descubrí algo muy claro:<br>
-        que amaba pasar el tiempo a tu lado,<br>
+        que me gustaba mucho pasar el tiempo a tu lado,<br>
         haciendo literalmente cualquier cosa ❤️
     </p>
 
-    <button onclick="mostrarFoto(this)">
-        📸 Presiona aquí para ver las fotos
+    <button onclick="mostrarViaje(this)">
+        Mira los momentos de mucho flow en el viaje
     </button>
 
-    <div class="gallery hidden-photo">
-        <img src="fotos/foto6.jpeg">
-        <img src="fotos/foto7.jpeg">
-    </div>
+    <!-- TEMPLATE: NUNCA SE RENDERIZA -->
+    <template class="viaje-template">
+        <div class="gallery">
+            <img src="fotos/foto6.jpeg">
+            <img src="fotos/foto7.jpeg">
+        </div>
+    </template>
+
+    <div class="viaje-container"></div>
 
     <button onclick="next()" style="display:none">
         Continuar 💘
     </button>
 </div>
 
+
 <!-- 6 -->
 <div class="screen">
     <p>
-        Luego seguimos saliendo,<br>
-        una semana después del viaje…<br><br>
+        Seguimos saliendo<br>
+        una semana después del viaje…<br>
         pero nuestras interacciones<br>
-        ya iban por otro lado 💫
+        ya iban por otro lado
     </p>
     <button onclick="next()">Continuar 💘</button>
 </div>
@@ -237,7 +353,7 @@ button {
 <!-- 7 -->
 <div class="screen">
     <p>
-        Hasta que llegó el día…<br><br>
+        Hasta que llegó el día…<br>
         en el que tenía que decirte<br>
         que estaba sintiendo cosas diferentes,<br>
         y que quería intentar algo contigo<br>
@@ -245,19 +361,24 @@ button {
     </p>
     <button onclick="next()">Continuar 💘</button>
 </div>
-
-<!-- 8 -->
+<!-- 8A -->
 <div class="screen">
     <p>
-        Luego llegó nuestro segundo viaje…<br>
-        fuimos a Oxapampa 🌿<br><br>
+        Finalmente, llegó nuestro segundo viaje…<br>
+        fuimos a Oxapampa<br><br>
         y fue un momento maravilloso,<br>
         porque confirmé lo feliz que era<br>
         estando a tu lado ❤️
     </p>
 
-    <div class="carousel">
-        <div class="carousel-track" id="carouselTrack">
+    <button onclick="next()">Ver recuerdos 📸</button>
+</div>
+
+<div class="screen">
+    <h1>Año nuevo a tu lado</h1>
+
+    <div class="ig-carousel">
+        <div class="ig-track" id="igTrack">
             <img src="fotos/foto1.jpeg">
             <img src="fotos/foto2.jpeg">
             <img src="fotos/foto3.jpeg">
@@ -277,22 +398,71 @@ button {
     <button onclick="next()">Continuar 💘</button>
 </div>
 
+
 <!-- FINAL -->
-<div class="screen">
+<div class="screen question">
     <p>
         Con todo esto…<br>
         solo quiero preguntarte algo<br>
         muy importante para mí 💖
     </p>
+
     <h1>¿Quieres ser mi San Valentín? 🌹</h1>
-    <button onclick="alert('💖 Sabía que dirías que sí 💖')">
-        Sí 💘
-    </button>
+
+    <div class="final-buttons">
+        <button class="yes-btn" onclick="acepta()">
+            Sí 
+        </button>
+
+        <button class="no-btn" id="btnNo">No </button>
+
+    </div>
 </div>
+
 
 <script>
 let current = 0;
 const screens = document.querySelectorAll('.screen');
+
+let index = 0;
+const track = document.getElementById("igTrack");
+const dots = document.querySelectorAll(".dot");
+const total = dots.length;
+
+function updateIG() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach(d => d.classList.remove("active"));
+    dots[index].classList.add("active");
+}
+
+// Auto slide (tipo stories)
+let igInterval = setInterval(() => {
+    index = (index + 1) % total;
+    updateIG();
+}, 2800);
+
+// Swipe táctil
+let startX = 0;
+
+track.addEventListener("touchstart", e => {
+    clearInterval(igInterval);
+    startX = e.touches[0].clientX;
+});
+
+track.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+    let diff = startX - endX;
+
+    if (diff > 50 && index < total - 1) index++;
+    if (diff < -50 && index > 0) index--;
+
+    updateIG();
+
+    igInterval = setInterval(() => {
+        index = (index + 1) % total;
+        updateIG();
+    }, 2800);
+});
 
 function next() {
     screens[current].classList.remove('active');
@@ -308,10 +478,6 @@ function mostrarFoto(btn) {
     btn.style.display = "none";
 }
 
-// Carrusel
-let index = 0;
-const track = document.getElementById("carouselTrack");
-const dots = document.querySelectorAll(".dot");
 
 setInterval(() => {
     index = (index + 1) % 5;
@@ -319,6 +485,80 @@ setInterval(() => {
     dots.forEach(d => d.classList.remove("active"));
     dots[index].classList.add("active");
 }, 3000);
+
+function mostrarViaje(btn) {
+    const screen = btn.closest('.screen');
+
+    const template = screen.querySelector('.viaje-template');
+    const container = screen.querySelector('.viaje-container');
+    const continuar = screen.querySelector('button[onclick="next()"]');
+
+    container.appendChild(template.content.cloneNode(true));
+    continuar.style.display = "inline-block";
+    btn.style.display = "none";
+}
+
+const btnNo = document.getElementById("btnNo");
+
+function moverNo() {
+    const padding = 10;
+
+    const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+    const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    btnNo.style.left = x + "px";
+    btnNo.style.top = y + "px";
+}
+
+// PC
+btnNo.addEventListener("mouseenter", moverNo);
+
+// Celular
+btnNo.addEventListener("touchstart", e => {
+    e.preventDefault();
+    moverNo();
+});
+
+// Extra: también se mueve si el dedo pasa cerca
+document.addEventListener("touchmove", e => {
+    const touch = e.touches[0];
+    const rect = btnNo.getBoundingClientRect();
+
+    if (
+        touch.clientX > rect.left - 30 &&
+        touch.clientX < rect.right + 30 &&
+        touch.clientY > rect.top - 30 &&
+        touch.clientY < rect.bottom + 30
+    ) {
+        moverNo();
+    }
+});
+
+// Acción del SÍ
+function acepta() {
+    document.body.innerHTML = `
+        <div style="
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            background:linear-gradient(135deg,#ff758c,#ff7eb3);
+            color:white;
+            padding:30px">
+            <h1>💖 Sabía que dirías que sí 💖</h1>
+            <p>Gracias por hacerme tan feliz ❤️</p>
+            <h2>Feliz San Valentín 🌹</h2>
+        </div>
+    `;
+}
+
+
+
 </script>
 
 </body>
