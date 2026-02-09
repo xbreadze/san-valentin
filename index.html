@@ -242,18 +242,60 @@ button {
 .dot.active {
     background: #ff4d6d;
 }
+.reveal,
+.screen button {
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.show {
+    animation: revealText 0.8s ease forwards;
+}
+
+@keyframes revealText {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
+<div class="screen active intro">
+    <h1>Oye…</h1>
+
+    <p class="reveal">
+        Si hoy esta siendo un día pesado,<br>
+        si hay estrés, cansancio<br>
+        o mil cosas en la cabeza…<br><br>
+    </p>
+    <p class="reveal">
+        tómate este momento solo para ti<br>
+        respira profundo,<br>
+        relaja los hombros,<br>
+        y espero que esto te saque una sonrisa
+    </p>
+
+    <button onclick="next()">Continuar 🌷</button>
+</div>
+
+
 <!-- 1 -->
-<div class="screen active">
-    <p>
+<div class="screen">
+    <p class="reveal">
         Desde que te conocí,<br>
-        literalmente no estaba buscando una relación,<br>
+        literalmente no estaba buscando una relación<br>
+    </p>    
+    <p class="reveal">
         pero empezamos a hablar<br>
         y a compartir momentos de nuestras vidas de manera natural<br>
+    </p>
+    <p class="reveal">
         todo empezó cuando nos fuimos hasta el fin del mundo JAJAJAJ
     </p>
     <button onclick="next()">Continuar 💕</button>
@@ -261,7 +303,7 @@ button {
 
 <!-- 2 -->
 <div class="screen">
-    <p>
+    <p class="reveal">
         Poco a poco,<br>
         te fui conociendo…
     </p>
@@ -270,8 +312,10 @@ button {
 
 <!-- 3 -->
 <div class="screen">
-    <p>
-        Y sin darme cuenta,<br>
+    <p class="reveal">
+        Y sin darme cuenta<br>
+    </p>
+    <p class="reveal">
         empezamos a salir en plan de amigos
     </p>
 
@@ -290,8 +334,10 @@ button {
 
 <!-- 4 -->
 <div class="screen">
-    <p>
+    <p class="reveal">
         Luego llegó el concierto de Halloween<br><br>
+    </p>
+    <p class="reveal">
         y de forma natural,<br>
         solo quería estar contigo,<br>
         cuidarte<br>
@@ -312,8 +358,10 @@ button {
 </div>
 
 <div class="screen">
-    <p>
+    <p class="reveal">
         Después llegó nuestro primer viaje…<br><br>
+    </p>
+    <p class="reveal">
         y ahí descubrí algo muy claro:<br>
         que me gustaba mucho pasar el tiempo a tu lado,<br>
         haciendo literalmente cualquier cosa ❤️
@@ -341,9 +389,11 @@ button {
 
 <!-- 6 -->
 <div class="screen">
-    <p>
+    <p class="reveal">
         Seguimos saliendo<br>
         una semana después del viaje…<br>
+    </p>
+    <p class="reveal">
         pero nuestras interacciones<br>
         ya iban por otro lado
     </p>
@@ -352,8 +402,10 @@ button {
 
 <!-- 7 -->
 <div class="screen">
-    <p>
+    <p class="reveal">
         Hasta que llegó el día…<br>
+    </p>
+    <p class="reveal">
         en el que tenía que decirte<br>
         que estaba sintiendo cosas diferentes,<br>
         y que quería intentar algo contigo<br>
@@ -363,8 +415,10 @@ button {
 </div>
 <!-- 8A -->
 <div class="screen">
-    <p>
+    <p class="reveal">
         Finalmente, llegó nuestro segundo viaje…<br>
+    </p>
+    <p class="reveal">
         fuimos a Oxapampa<br><br>
         y fue un momento maravilloso,<br>
         porque confirmé lo feliz que era<br>
@@ -401,13 +455,17 @@ button {
 
 <!-- FINAL -->
 <div class="screen question">
-    <p>
+    <p class="reveal">
         Con todo esto…<br>
+    </p>
+    <p class="reveal">
         solo quiero preguntarte algo<br>
         muy importante para mí 💖
-    </p>
+    
 
-    <h1>¿Quieres ser mi San Valentín? 🌹</h1>
+    <p class="reveal">
+        ¿Quieres ser mi San Valentín? 🌹
+    </p>    
 
     <div class="final-buttons">
         <button class="yes-btn" onclick="acepta()">
@@ -463,13 +521,13 @@ track.addEventListener("touchend", e => {
         updateIG();
     }, 2800);
 });
-
 function next() {
     screens[current].classList.remove('active');
     current++;
     screens[current].classList.add('active');
-}
 
+    revealSequence(screens[current]);
+}
 // Mostrar fotos
 function mostrarFoto(btn) {
     const screen = btn.parentElement;
@@ -537,10 +595,18 @@ document.addEventListener("touchmove", e => {
     }
 });
 
-// Acción del SÍ
 function acepta() {
     document.body.innerHTML = `
-        <div style="
+        <div class="final-screen">
+            <h1 class="reveal">💖 Sabía que dirías que sí 💖</h1>
+            <p class="reveal">Gracias por hacerme tan feliz ❤️</p>
+            <h2 class="reveal">Feliz San Valentín 🌹</h2>
+        </div>
+    `;
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+        .final-screen {
             height:100vh;
             display:flex;
             flex-direction:column;
@@ -549,14 +615,36 @@ function acepta() {
             text-align:center;
             background:linear-gradient(135deg,#ff758c,#ff7eb3);
             color:white;
-            padding:30px">
-            <h1>💖 Sabía que dirías que sí 💖</h1>
-            <p>Gracias por hacerme tan feliz ❤️</p>
-            <h2>Feliz San Valentín 🌹</h2>
-        </div>
+            padding:30px;
+        }
     `;
+    document.head.appendChild(style);
+
+    // Animación uno por uno cada 2 segundos
+    const elements = document.querySelectorAll(".final-screen .reveal");
+    elements.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add("show");
+        }, i * 2000);
+    });
 }
 
+
+function revealSequence(screen) {
+    const elements = screen.querySelectorAll('.reveal, button');
+
+    elements.forEach(el => {
+        el.classList.remove('show');
+    });
+
+    elements.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add('show');
+        }, i * 2000);
+    });
+}
+
+revealSequence(screens[0]);
 
 
 </script>
